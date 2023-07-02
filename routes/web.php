@@ -7,21 +7,21 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductImageController;
 
-// Route::get('/', function () {
-//     return inertia('Welcome', [
-//         'canLogin' => Route::has('login'),
-//         'canRegister' => Route::has('register'),
-//         'laravelVersion' => Application::VERSION,
-//         'phpVersion' => PHP_VERSION,
-//     ]);
-// });
+Route::get('/', function () {
+    return inertia('Welcome', [
+        'canLogin' => Route::has('login'),
+        'canRegister' => Route::has('register'),
+        'laravelVersion' => Application::VERSION,
+        'phpVersion' => PHP_VERSION,
+    ]);
+});
 
 // Route::get('/dashboard', function () {
 //     return inertia('Dashboard');
 // })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/', fn () => redirect()->route('product.index'))
-    ->name('home');
+// Route::get('/', fn () => redirect()->route('product.index'))
+//     ->name('home');
 
 Route::get('/dashboard', fn () => redirect()->route('product.index'))
     ->name('dashboard');
