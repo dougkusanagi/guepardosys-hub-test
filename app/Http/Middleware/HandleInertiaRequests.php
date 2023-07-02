@@ -31,6 +31,7 @@ class HandleInertiaRequests extends Middleware
     public function share(Request $request): array
     {
         return array_merge(parent::share($request), [
+            'csrf_token' => csrf_token(),
             'auth' => [
                 'user' => $request->user(),
             ],
@@ -39,6 +40,13 @@ class HandleInertiaRequests extends Middleware
                     'location' => $request->url(),
                 ]);
             },
+            'flash' => [
+                'message' => fn () => session('message'),
+                'success' => fn () => session('success'),
+                'info' => fn () => session('info'),
+                'warning' => fn () => session('warning'),
+                'error' => fn () => session('error'),
+            ],
         ]);
     }
 }

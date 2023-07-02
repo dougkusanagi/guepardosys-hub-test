@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -11,7 +12,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->loadHelpers();
     }
 
     /**
@@ -19,6 +20,15 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Model::shouldBeStrict(
+            app()->isLocal()
+        );
+    }
+
+    protected function loadHelpers()
+    {
+        foreach (glob(__DIR__ . '/../Helpers/**/*.php') as $filename) {
+            require_once $filename;
+        }
     }
 }
