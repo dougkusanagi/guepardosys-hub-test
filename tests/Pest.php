@@ -1,7 +1,11 @@
 <?php
 
+use App\Models\Tenant;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+
+use function Pest\Laravel\actingAs;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,4 +49,11 @@ expect()->extend('toBeOne', function () {
 function something()
 {
     // ..
+}
+
+function asUser(array $attributes = []): TestCase
+{
+    $tenant = Tenant::factory()->create();
+    $user = User::factory()->create(['tenant_id' => $tenant->id, ...$attributes]);
+    return actingAs($user);
 }

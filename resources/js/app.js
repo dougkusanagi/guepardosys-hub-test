@@ -10,7 +10,8 @@ import { ZiggyVue } from "../../vendor/tightenco/ziggy/dist/vue.m";
 import Toast from "vue-toastification";
 
 const appName =
-    window.document.getElementsByTagName("title")[0]?.innerText || "Laravel";
+    window.document.getElementsByTagName("title")[0]?.innerText ||
+    "Guepardosys Hub";
 
 router.on("start", () => NProgress.start());
 router.on("finish", () => NProgress.done());
