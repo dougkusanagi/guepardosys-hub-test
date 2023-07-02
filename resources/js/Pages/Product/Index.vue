@@ -1,3 +1,92 @@
+<script setup>
+import { Head, Link, router } from "@inertiajs/vue3";
+import { computed, reactive, watch } from "vue";
+import FormInputText from "@/Components/Form/FormInputText.vue";
+import FormSelect from "@/Components/Form/FormSelect.vue";
+import LayoutButton from "@/Components/LayoutButton.vue";
+import LayoutHeader from "@/Components/LayoutHeader.vue";
+import LayoutSection from "@/Components/LayoutSection.vue";
+import PaginationPages from "@/Components/PaginationPages.vue";
+import PaginationPerPage from "@/Components/PaginationPerPage.vue";
+import TabsFilterByStatusLink from "@/Components/TabsFilterByStatusLink.vue";
+import ArrowUp from "@/Icons/ArrowUp.vue";
+import PlusIcon from "@/Icons/Plus.vue";
+import Close from "@/Icons/Close.vue";
+import DashboardLayout from "@/Layouts/DashboardLayout.vue";
+
+const props = defineProps({
+    products: Object,
+    product_count_array: Object,
+    categories_all: Array,
+    product_status_array: Array,
+    product_status_all: Object,
+    per_page: String,
+});
+
+const breadcrumbsLinks = [
+    {
+        label: "Início",
+        link: route("dashboard"),
+        isHome: true,
+    },
+    {
+        label: "Produtos",
+    },
+    {
+        label: "Listar",
+    },
+];
+
+const queryParams = reactive({
+    name: "",
+    category: "",
+    status: "",
+    order_by: "name",
+    direction: "",
+    per_page: props.per_page,
+});
+
+watch(
+    queryParams,
+    () => {
+        router.get(route("product.index"), queryParams, {
+            replace: true,
+            preserveState: true,
+        });
+    },
+    { deep: true }
+);
+
+const sortBy = (field) => {
+    if (queryParams.order_by === field) {
+        console.log(queryParams.direction);
+        queryParams.direction =
+            queryParams.direction === "asc" ? "desc" : "asc";
+    } else {
+        queryParams.direction = "asc";
+    }
+
+    queryParams.order_by = field;
+};
+
+const filterByStatus = (status) => (queryParams.status = status);
+
+const categories_all_complete = computed(() => {
+    return [{ name: "Todas as categorias", id: "" }, ...props.categories_all];
+});
+
+const getProductThumb = (product) => {
+    return product.images.length ? product.images[0] : "/img/no-image.png";
+};
+
+function removeProduct(product_id) {
+    router.visit(route("product.destroy", product_id), {
+        method: "delete",
+        onBefore: () => confirm("Tem certeza que deseja deletar o produto?"),
+    });
+}
+</script>
+
 <template>
     <Head title="Produtos" />
 
@@ -255,92 +344,3 @@
         </div>
     </DashboardLayout>
 </template>
-
-<script setup>
-import { Head, Link, router } from "@inertiajs/vue3";
-import { computed, reactive, watch } from "vue";
-import FormInputText from "@/Components/Form/FormInputText.vue";
-import FormSelect from "@/Components/Form/FormSelect.vue";
-import LayoutButton from "@/Components/LayoutButton.vue";
-import LayoutHeader from "@/Components/LayoutHeader.vue";
-import LayoutSection from "@/Components/LayoutSection.vue";
-import PaginationPages from "@/Components/PaginationPages.vue";
-import PaginationPerPage from "@/Components/PaginationPerPage.vue";
-import TabsFilterByStatusLink from "@/Components/TabsFilterByStatusLink.vue";
-import ArrowUp from "@/Icons/ArrowUp.vue";
-import PlusIcon from "@/Icons/Plus.vue";
-import Close from "@/Icons/Close.vue";
-import DashboardLayout from "@/Layout/DashboardLayout.vue";
-
-const props = defineProps({
-    products: Object,
-    product_count_array: Object,
-    categories_all: Array,
-    product_status_array: Array,
-    product_status_all: Object,
-    per_page: String,
-});
-
-const breadcrumbsLinks = [
-    {
-        label: "Início",
-        link: route("dashboard"),
-        isHome: true,
-    },
-    {
-        label: "Produtos",
-    },
-    {
-        label: "Listar",
-    },
-];
-
-const queryParams = reactive({
-    name: "",
-    category: "",
-    status: "",
-    order_by: "name",
-    direction: "",
-    per_page: props.per_page,
-});
-
-watch(
-    queryParams,
-    () => {
-        router.get(route("product.index"), queryParams, {
-            replace: true,
-            preserveState: true,
-        });
-    },
-    { deep: true }
-);
-
-const sortBy = (field) => {
-    if (queryParams.order_by === field) {
-        console.log(queryParams.direction);
-        queryParams.direction =
-            queryParams.direction === "asc" ? "desc" : "asc";
-    } else {
-        queryParams.direction = "asc";
-    }
-
-    queryParams.order_by = field;
-};
-
-const filterByStatus = (status) => (queryParams.status = status);
-
-const categories_all_complete = computed(() => {
-    return [{ name: "Todas as categorias", id: "" }, ...props.categories_all];
-});
-
-const getProductThumb = (product) => {
-    return product.images.length ? product.images[0] : "/img/no-image.png";
-};
-
-function removeProduct(product_id) {
-    router.visit(route("product.destroy", product_id), {
-        method: "delete",
-        onBefore: () => confirm("Tem certeza que deseja deletar o produto?"),
-    });
-}
-</script>

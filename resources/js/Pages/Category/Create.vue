@@ -86,9 +86,9 @@ import SidenavScrolltoLink from "@/Components/SidenavScrolltoLink.vue";
 import { slugfy } from "@/Helpers/string";
 import ChevronLeft from "@/Icons/ChevronLeft.vue";
 import InformationCircleIcon from "@/Icons/InformationCircle.vue";
-import DashboardLayout from "@/Layout/DashboardLayout.vue";
+import DashboardLayout from "@/Layouts/DashboardLayout.vue";
 import { useForm } from "@inertiajs/vue3";
-import { computed, watch } from "vue";
+import { watch } from "vue";
 
 const breadcrumbsLinks = [
     {

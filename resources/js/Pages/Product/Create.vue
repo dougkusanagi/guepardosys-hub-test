@@ -421,7 +421,7 @@ import InfoCircle from "@/Icons/InfoCircle.vue";
 import InformationCircleIcon from "@/Icons/InformationCircle.vue";
 import ScaleIcon from "@/Icons/Scale.vue";
 import StackCircleIcon from "@/Icons/StackCircle.vue";
-import DashboardLayout from "@/Layout/DashboardLayout.vue";
+import DashboardLayout from "@/Layouts/DashboardLayout.vue";
 import { useForm } from "@inertiajs/vue3";
 import { computed, watch } from "vue";
 

@@ -429,7 +429,7 @@ import InfoCircle from "@/Icons/InfoCircle.vue";
 import ChevronLeft from "@/Icons/ChevronLeft.vue";
 import StackCircleIcon from "@/Icons/StackCircle.vue";
 import InformationCircleIcon from "@/Icons/InformationCircle.vue";
-import DashboardLayout from "@/Layout/DashboardLayout.vue";
+import DashboardLayout from "@/Layouts/DashboardLayout.vue";
 import { useForm } from "@inertiajs/vue3";
 import { computed, ref, watch } from "vue";
 

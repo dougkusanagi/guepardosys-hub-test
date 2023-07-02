@@ -17,7 +17,7 @@ trait Tenantable
             && !is_null(session()->get('tenant_id'))
         ) {
             static::creating(function ($model) {
-                $model->tenant_id = auth()->user()->tenant_id;
+                $model->tenant_id = session()->get('tenant_id');
             });
         }
     }

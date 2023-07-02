@@ -1,3 +1,62 @@
+<script setup>
+import { Head, router } from "@inertiajs/vue3";
+import { reactive, watch } from "vue";
+import DashboardLayout from "@/Layouts/DashboardLayout.vue";
+import LayoutSection from "@/Components/LayoutSection.vue";
+import LayoutHeader from "@/Components/LayoutHeader.vue";
+import LayoutButton from "@/Components/LayoutButton.vue";
+import FormInputText from "@/Components/Form/FormInputText.vue";
+import PaginationPerPage from "@/Components/PaginationPerPage.vue";
+import PlusIcon from "@/Icons/Plus.vue";
+import ArrowUp from "@/Icons/ArrowUp.vue";
+import Close from "@/Icons/Close.vue";
+import PaginationPages from "@/Components/PaginationPages.vue";
+
+const props = defineProps({
+    categories: Object,
+    per_page: String,
+});
+
+const breadcrumbsLinks = [
+    {
+        label: "Início",
+        link: route("dashboard"),
+        isHome: true,
+    },
+    {
+        label: "Categorias",
+    },
+    {
+        label: "Listar",
+    },
+];
+
+const queryParams = reactive({
+    name: "",
+    order_by: "name",
+    direction: "asc",
+    per_page: props.per_page,
+});
+
+watch(
+    queryParams,
+    () => {
+        router.get(route("category.index"), queryParams, {
+            replace: true,
+            preserveState: true,
+        });
+    },
+    { deep: true }
+);
+
+function removeCategory(category_id) {
+    router.visit(route("category.destroy", category_id), {
+        method: "delete",
+        onBefore: () => confirm("Tem certeza que deseja deletar a categoria?"),
+    });
+}
+</script>
+
 <template>
     <Head title="Categorias" />
 
@@ -138,62 +197,3 @@
         </div>
     </DashboardLayout>
 </template>
-
-<script setup>
-import { Head, router } from "@inertiajs/vue3";
-import { reactive, watch } from "vue";
-import DashboardLayout from "@/Layout/DashboardLayout.vue";
-import LayoutSection from "@/Components/LayoutSection.vue";
-import LayoutHeader from "@/Components/LayoutHeader.vue";
-import LayoutButton from "@/Components/LayoutButton.vue";
-import FormInputText from "@/Components/Form/FormInputText.vue";
-import PaginationPerPage from "@/Components/PaginationPerPage.vue";
-import PlusIcon from "@/Icons/Plus.vue";
-import ArrowUp from "@/Icons/ArrowUp.vue";
-import Close from "@/Icons/Close.vue";
-import PaginationPages from "@/Components/PaginationPages.vue";
-
-const props = defineProps({
-    categories: Object,
-    per_page: String,
-});
-
-const breadcrumbsLinks = [
-    {
-        label: "Início",
-        link: route("dashboard"),
-        isHome: true,
-    },
-    {
-        label: "Categorias",
-    },
-    {
-        label: "Listar",
-    },
-];
-
-const queryParams = reactive({
-    name: "",
-    order_by: "name",
-    direction: "asc",
-    per_page: props.per_page,
-});
-
-watch(
-    queryParams,
-    () => {
-        router.get(route("category.index"), queryParams, {
-            replace: true,
-            preserveState: true,
-        });
-    },
-    { deep: true }
-);
-
-function removeCategory(category_id) {
-    router.visit(route("category.destroy", category_id), {
-        method: "delete",
-        onBefore: () => confirm("Tem certeza que deseja deletar a categoria?"),
-    });
-}
-</script>
