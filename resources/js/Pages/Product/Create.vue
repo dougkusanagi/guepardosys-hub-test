@@ -1,3 +1,119 @@
+<script setup>
+import FilepondInput from "@/Components/FilepondInput.vue";
+import ButtonSave from "@/Components/Form/ButtonSave.vue";
+import FormInputText from "@/Components/Form/FormInputText.vue";
+import FormLabel from "@/Components/Form/FormLabel.vue";
+import FormSelect from "@/Components/Form/FormSelect.vue";
+import FormTextarea from "@/Components/Form/FormTextarea.vue";
+import LayoutButton from "@/Components/LayoutButton.vue";
+import LayoutHeader from "@/Components/LayoutHeader.vue";
+import LayoutSection from "@/Components/LayoutSection.vue";
+import SidenavScrollto from "@/Components/SidenavScrollto.vue";
+import SidenavScrolltoLink from "@/Components/SidenavScrolltoLink.vue";
+import { slugfy } from "@/Helpers/string";
+import CameraIcon from "@/Icons/Camera.vue";
+import ChevronLeft from "@/Icons/ChevronLeft.vue";
+import InfoCircle from "@/Icons/InfoCircle.vue";
+import InformationCircleIcon from "@/Icons/InformationCircle.vue";
+import ScaleIcon from "@/Icons/Scale.vue";
+import StackCircleIcon from "@/Icons/StackCircle.vue";
+import DashboardLayout from "@/Layouts/DashboardLayout.vue";
+import { useForm } from "@inertiajs/vue3";
+import { computed, watch } from "vue";
+
+const breadcrumbsLinks = [
+    {
+        label: "Início",
+        link: route("dashboard"),
+        isHome: true,
+    },
+    {
+        label: "Produtos",
+        link: route("product.index", {
+            order_by: "name",
+            direction: "asc",
+        }),
+    },
+    {
+        label: "Cadastro",
+    },
+];
+
+const sidenavScrolltoLinks = [
+    {
+        name: "Imagens",
+        route: "#section-images",
+        icon: CameraIcon,
+    },
+    {
+        name: "Informações",
+        route: "#section-basic-info",
+        icon: InformationCircleIcon,
+    },
+    {
+        name: "Estoque",
+        route: "#section-stock",
+        icon: StackCircleIcon,
+    },
+    {
+        name: "Medidas",
+        route: "#section-sizes",
+        icon: ScaleIcon,
+    },
+];
+
+const props = defineProps({
+    product_status_enum: Array,
+    categories_all: Array,
+    product: Object,
+    errors: Object,
+    csrf_token: String,
+});
+
+const form = useForm({
+    category_id: "",
+    name: "",
+    slug: "",
+    price: "",
+    description: "",
+    description_html: "",
+    availability: "",
+    stock_local: "",
+    stock_local_min: "",
+    stock_virtual: "",
+    barcode: "",
+    ncm: "",
+    weight: "",
+    height: "",
+    width: "",
+    length: "",
+    keywords: "",
+    status: "",
+    brand: "",
+    product_model_prefix_id: "",
+    images: [],
+});
+
+form.transform((data) => {
+    console.log(data);
+    return {
+        ...data,
+        images: data.images.map((item) => item.serverId),
+    };
+});
+
+watch(form, (new_data) => (form.slug = slugfy(new_data.name)));
+
+const categories_all_complete = computed(() => {
+    console.log(props.categories_all);
+    return [{ name: "Escolha a categoria", id: "" }, ...props.categories_all];
+});
+
+const submit = function () {
+    form.post(route("product.store"));
+};
+</script>
+
 <template>
     <DashboardLayout>
         <div class="pt-12 px-6">
@@ -401,119 +517,3 @@
         </div>
     </DashboardLayout>
 </template>
-
-<script setup>
-import FilepondInput from "@/Components/FilepondInput.vue";
-import ButtonSave from "@/Components/Form/ButtonSave.vue";
-import FormInputText from "@/Components/Form/FormInputText.vue";
-import FormLabel from "@/Components/Form/FormLabel.vue";
-import FormSelect from "@/Components/Form/FormSelect.vue";
-import FormTextarea from "@/Components/Form/FormTextarea.vue";
-import LayoutButton from "@/Components/LayoutButton.vue";
-import LayoutHeader from "@/Components/LayoutHeader.vue";
-import LayoutSection from "@/Components/LayoutSection.vue";
-import SidenavScrollto from "@/Components/SidenavScrollto.vue";
-import SidenavScrolltoLink from "@/Components/SidenavScrolltoLink.vue";
-import { slugfy } from "@/Helpers/string";
-import CameraIcon from "@/Icons/Camera.vue";
-import ChevronLeft from "@/Icons/ChevronLeft.vue";
-import InfoCircle from "@/Icons/InfoCircle.vue";
-import InformationCircleIcon from "@/Icons/InformationCircle.vue";
-import ScaleIcon from "@/Icons/Scale.vue";
-import StackCircleIcon from "@/Icons/StackCircle.vue";
-import DashboardLayout from "@/Layouts/DashboardLayout.vue";
-import { useForm } from "@inertiajs/vue3";
-import { computed, watch } from "vue";
-
-const breadcrumbsLinks = [
-    {
-        label: "Início",
-        link: route("dashboard"),
-        isHome: true,
-    },
-    {
-        label: "Produtos",
-        link: route("product.index", {
-            order_by: "name",
-            direction: "asc",
-        }),
-    },
-    {
-        label: "Cadastro",
-    },
-];
-
-const sidenavScrolltoLinks = [
-    {
-        name: "Imagens",
-        route: "#section-images",
-        icon: CameraIcon,
-    },
-    {
-        name: "Informações",
-        route: "#section-basic-info",
-        icon: InformationCircleIcon,
-    },
-    {
-        name: "Estoque",
-        route: "#section-stock",
-        icon: StackCircleIcon,
-    },
-    {
-        name: "Medidas",
-        route: "#section-sizes",
-        icon: ScaleIcon,
-    },
-];
-
-const props = defineProps({
-    product_status_enum: Array,
-    categories_all: Array,
-    product: Object,
-    errors: Object,
-    csrf_token: String,
-});
-
-const form = useForm({
-    category_id: "",
-    name: "",
-    slug: "",
-    price: "",
-    description: "",
-    description_html: "",
-    availability: "",
-    stock_local: "",
-    stock_local_min: "",
-    stock_virtual: "",
-    barcode: "",
-    ncm: "",
-    weight: "",
-    height: "",
-    width: "",
-    length: "",
-    keywords: "",
-    status: "",
-    brand: "",
-    product_model_prefix_id: "",
-    images: [],
-});
-
-form.transform((data) => {
-    console.log(data);
-    return {
-        ...data,
-        images: data.images.map((item) => item.serverId),
-    };
-});
-
-watch(form, (new_data) => (form.slug = slugfy(new_data.name)));
-
-const categories_all_complete = computed(() => {
-    console.log(props.categories_all);
-    return [{ name: "Escolha a categoria", id: "" }, ...props.categories_all];
-});
-
-const submit = function () {
-    form.post(route("product.store"));
-};
-</script>

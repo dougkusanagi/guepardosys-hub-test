@@ -1,3 +1,62 @@
+<script setup>
+import ButtonSave from "@/Components/Form/ButtonSave.vue";
+import FormInputText from "@/Components/Form/FormInputText.vue";
+import FormLabel from "@/Components/Form/FormLabel.vue";
+import LayoutButton from "@/Components/LayoutButton.vue";
+import LayoutHeader from "@/Components/LayoutHeader.vue";
+import LayoutSection from "@/Components/LayoutSection.vue";
+import SidenavScrollto from "@/Components/SidenavScrollto.vue";
+import SidenavScrolltoLink from "@/Components/SidenavScrolltoLink.vue";
+import { slugfy } from "@/Helpers/string";
+import ChevronLeft from "@/Icons/ChevronLeft.vue";
+import InformationCircleIcon from "@/Icons/InformationCircle.vue";
+import DashboardLayout from "@/Layouts/DashboardLayout.vue";
+import { useForm } from "@inertiajs/vue3";
+import { watch } from "vue";
+
+const breadcrumbsLinks = [
+    {
+        label: "Início",
+        link: route("dashboard"),
+        isHome: true,
+    },
+    {
+        label: "Categorias",
+        link: route("category.index", {
+            order_by: "name",
+            direction: "asc",
+        }),
+    },
+    {
+        label: "Cadastro",
+    },
+];
+
+const sidenavScrolltoLinks = [
+    {
+        name: "Informações",
+        route: "#section-basic-info",
+        icon: InformationCircleIcon,
+    },
+];
+
+const props = defineProps({
+    category: Object,
+    errors: Object,
+});
+
+const form = useForm({
+    name: "",
+    slug: "",
+});
+
+watch(form, (new_data) => (form.slug = slugfy(new_data.name)));
+
+const submit = function () {
+    form.post(route("category.store"));
+};
+</script>
+
 <template>
     <DashboardLayout>
         <div class="pt-12 px-6">
@@ -73,62 +132,3 @@
         </div>
     </DashboardLayout>
 </template>
-
-<script setup>
-import ButtonSave from "@/Components/Form/ButtonSave.vue";
-import FormInputText from "@/Components/Form/FormInputText.vue";
-import FormLabel from "@/Components/Form/FormLabel.vue";
-import LayoutButton from "@/Components/LayoutButton.vue";
-import LayoutHeader from "@/Components/LayoutHeader.vue";
-import LayoutSection from "@/Components/LayoutSection.vue";
-import SidenavScrollto from "@/Components/SidenavScrollto.vue";
-import SidenavScrolltoLink from "@/Components/SidenavScrolltoLink.vue";
-import { slugfy } from "@/Helpers/string";
-import ChevronLeft from "@/Icons/ChevronLeft.vue";
-import InformationCircleIcon from "@/Icons/InformationCircle.vue";
-import DashboardLayout from "@/Layouts/DashboardLayout.vue";
-import { useForm } from "@inertiajs/vue3";
-import { watch } from "vue";
-
-const breadcrumbsLinks = [
-    {
-        label: "Início",
-        link: route("dashboard"),
-        isHome: true,
-    },
-    {
-        label: "Categorias",
-        link: route("category.index", {
-            order_by: "name",
-            direction: "asc",
-        }),
-    },
-    {
-        label: "Cadastro",
-    },
-];
-
-const sidenavScrolltoLinks = [
-    {
-        name: "Informações",
-        route: "#section-basic-info",
-        icon: InformationCircleIcon,
-    },
-];
-
-const props = defineProps({
-    category: Object,
-    errors: Object,
-});
-
-const form = useForm({
-    name: "",
-    slug: "",
-});
-
-watch(form, (new_data) => (form.slug = slugfy(new_data.name)));
-
-const submit = function () {
-    form.post(route("category.store"));
-};
-</script>

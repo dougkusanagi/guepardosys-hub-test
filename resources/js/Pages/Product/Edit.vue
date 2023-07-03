@@ -1,3 +1,126 @@
+<script setup>
+import FilepondInput from "@/Components/FilepondInput.vue";
+import ButtonSave from "@/Components/Form/ButtonSave.vue";
+import FormInputText from "@/Components/Form/FormInputText.vue";
+import FormLabel from "@/Components/Form/FormLabel.vue";
+import FormSelect from "@/Components/Form/FormSelect.vue";
+import FormTextarea from "@/Components/Form/FormTextarea.vue";
+import LayoutButton from "@/Components/LayoutButton.vue";
+import LayoutHeader from "@/Components/LayoutHeader.vue";
+import LayoutSection from "@/Components/LayoutSection.vue";
+import ProductEditImageThumb from "@/Components/ProductEditImageThumb.vue";
+import SidenavScrollto from "@/Components/SidenavScrollto.vue";
+import SidenavScrolltoLink from "@/Components/SidenavScrolltoLink.vue";
+import { slugfy } from "@/Helpers/string";
+import ScaleIcon from "@/Icons/Scale.vue";
+import CameraIcon from "@/Icons/Camera.vue";
+import InfoCircle from "@/Icons/InfoCircle.vue";
+import ChevronLeft from "@/Icons/ChevronLeft.vue";
+import StackCircleIcon from "@/Icons/StackCircle.vue";
+import InformationCircleIcon from "@/Icons/InformationCircle.vue";
+import DashboardLayout from "@/Layouts/DashboardLayout.vue";
+import { useForm } from "@inertiajs/vue3";
+import { computed, ref, watch } from "vue";
+
+const breadcrumbsLinks = [
+    {
+        label: "Início",
+        link: route("dashboard"),
+        isHome: true,
+    },
+    {
+        label: "Produtos",
+        link: route("product.index", {
+            order_by: "name",
+            direction: "asc",
+        }),
+    },
+    {
+        label: "Cadastro",
+    },
+];
+
+const sidenavScrolltoLinks = [
+    {
+        name: "Imagens",
+        route: "#section-images",
+        icon: CameraIcon,
+    },
+    {
+        name: "Informações",
+        route: "#section-basic-info",
+        icon: InformationCircleIcon,
+    },
+    {
+        name: "Estoque",
+        route: "#section-stock",
+        icon: StackCircleIcon,
+    },
+    {
+        name: "Medidas",
+        route: "#section-sizes",
+        icon: ScaleIcon,
+    },
+];
+
+const props = defineProps({
+    product_status_enum: Array,
+    categories_all: Array,
+    product: Object,
+    errors: Object,
+    csrf_token: String,
+    images: Array,
+});
+
+const form = useForm({
+    category_id: props.product.category_id,
+    name: props.product.name,
+    slug: props.product.slug,
+    model: props.product.model,
+    price: props.product.price,
+    description: props.product.description,
+    description_html: props.product.description_html,
+    availability: props.product.availability,
+    stock_local: props.product.stock_local,
+    stock_local_min: props.product.stock_local_min,
+    stock_virtual: props.product.stock_virtual,
+    barcode: props.product.barcode,
+    ncm: props.product.ncm,
+    weight: props.product.weight,
+    height: props.product.height,
+    width: props.product.width,
+    length: props.product.length,
+    keywords: props.product.keywords,
+    status: props.product.status,
+    brand: props.product.brand,
+    images: [],
+});
+
+form.transform((data) => {
+    return {
+        ...data,
+        images: data.images.map((item) => item.serverId),
+    };
+});
+
+const filepond_images_ref = ref(null);
+
+const categories_all_complete = computed(() => {
+    return [{ name: "Escolha a categoria", id: "" }, ...props.categories_all];
+});
+
+watch(form, (new_data) => (form.slug = slugfy(new_data.name)));
+
+function submit() {
+    form.put(route("product.update", props.product.id), {
+        onSuccess: () => {
+            filepond_images_ref.value.filepond_ref.removeFiles();
+            form.images = [];
+        },
+    });
+}
+</script>
+
 <template>
     <DashboardLayout>
         <div class="pt-12 px-6">
@@ -408,126 +531,3 @@
         </div>
     </DashboardLayout>
 </template>
-
-<script setup>
-import FilepondInput from "@/Components/FilepondInput.vue";
-import ButtonSave from "@/Components/Form/ButtonSave.vue";
-import FormInputText from "@/Components/Form/FormInputText.vue";
-import FormLabel from "@/Components/Form/FormLabel.vue";
-import FormSelect from "@/Components/Form/FormSelect.vue";
-import FormTextarea from "@/Components/Form/FormTextarea.vue";
-import LayoutButton from "@/Components/LayoutButton.vue";
-import LayoutHeader from "@/Components/LayoutHeader.vue";
-import LayoutSection from "@/Components/LayoutSection.vue";
-import ProductEditImageThumb from "@/Components/ProductEditImageThumb.vue";
-import SidenavScrollto from "@/Components/SidenavScrollto.vue";
-import SidenavScrolltoLink from "@/Components/SidenavScrolltoLink.vue";
-import { slugfy } from "@/Helpers/string";
-import ScaleIcon from "@/Icons/Scale.vue";
-import CameraIcon from "@/Icons/Camera.vue";
-import InfoCircle from "@/Icons/InfoCircle.vue";
-import ChevronLeft from "@/Icons/ChevronLeft.vue";
-import StackCircleIcon from "@/Icons/StackCircle.vue";
-import InformationCircleIcon from "@/Icons/InformationCircle.vue";
-import DashboardLayout from "@/Layouts/DashboardLayout.vue";
-import { useForm } from "@inertiajs/vue3";
-import { computed, ref, watch } from "vue";
-
-const breadcrumbsLinks = [
-    {
-        label: "Início",
-        link: route("dashboard"),
-        isHome: true,
-    },
-    {
-        label: "Produtos",
-        link: route("product.index", {
-            order_by: "name",
-            direction: "asc",
-        }),
-    },
-    {
-        label: "Cadastro",
-    },
-];
-
-const sidenavScrolltoLinks = [
-    {
-        name: "Imagens",
-        route: "#section-images",
-        icon: CameraIcon,
-    },
-    {
-        name: "Informações",
-        route: "#section-basic-info",
-        icon: InformationCircleIcon,
-    },
-    {
-        name: "Estoque",
-        route: "#section-stock",
-        icon: StackCircleIcon,
-    },
-    {
-        name: "Medidas",
-        route: "#section-sizes",
-        icon: ScaleIcon,
-    },
-];
-
-const props = defineProps({
-    product_status_enum: Array,
-    categories_all: Array,
-    product: Object,
-    errors: Object,
-    csrf_token: String,
-    images: Array,
-});
-
-const form = useForm({
-    category_id: props.product.category_id,
-    name: props.product.name,
-    slug: props.product.slug,
-    model: props.product.model,
-    price: props.product.price,
-    description: props.product.description,
-    description_html: props.product.description_html,
-    availability: props.product.availability,
-    stock_local: props.product.stock_local,
-    stock_local_min: props.product.stock_local_min,
-    stock_virtual: props.product.stock_virtual,
-    barcode: props.product.barcode,
-    ncm: props.product.ncm,
-    weight: props.product.weight,
-    height: props.product.height,
-    width: props.product.width,
-    length: props.product.length,
-    keywords: props.product.keywords,
-    status: props.product.status,
-    brand: props.product.brand,
-    images: [],
-});
-
-form.transform((data) => {
-    return {
-        ...data,
-        images: data.images.map((item) => item.serverId),
-    };
-});
-
-const filepond_images_ref = ref(null);
-
-const categories_all_complete = computed(() => {
-    return [{ name: "Escolha a categoria", id: "" }, ...props.categories_all];
-});
-
-watch(form, (new_data) => (form.slug = slugfy(new_data.name)));
-
-function submit() {
-    form.put(route("product.update", props.product.id), {
-        onSuccess: () => {
-            filepond_images_ref.value.filepond_ref.removeFiles();
-            form.images = [];
-        },
-    });
-}
-</script>
