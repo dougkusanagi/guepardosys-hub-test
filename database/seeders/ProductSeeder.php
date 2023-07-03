@@ -21,7 +21,7 @@ class ProductSeeder extends Seeder
                         'tenant_id' => $category->tenant_id,
                     ])
                     ->each(function (Product $product) {
-                        $product->addMedia(public_path('/img/no-image.png'))
+                        $product->addMedia(public_path('/img/product-example.png'))
                             ->preservingOriginal()
                             ->toMediaCollection('images');
                     });
