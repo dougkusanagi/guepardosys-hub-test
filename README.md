@@ -56,3 +56,9 @@ yarn build
 login: example@email.com
 password: password
 ```
+
+## Todo
+
+-   [x] Gerenciar produtos
+-   [x] Gerenciar categorias
+-   [ ] Gerenciar pedidos
