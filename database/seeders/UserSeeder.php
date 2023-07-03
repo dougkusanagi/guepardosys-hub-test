@@ -14,8 +14,8 @@ class UserSeeder extends Seeder
         User::factory()
             ->for(Tenant::first())
             ->create([
-                'name' => 'Admin',
-                'email' => 'admin@dougdesign.com.br',
+                'name' => 'Test User',
+                'email' => 'example@email.com',
                 'password' => bcrypt('password'),
                 'tenant_id' => null,
             ]);
