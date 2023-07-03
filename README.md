@@ -34,19 +34,19 @@ php artisan migrate:fresh --seed
 php artisan migrate:fresh --seed --seeder=CompleteSeeder
 ```
 
-3. Generate key
+6. Generate key
 
 ```shell
 php artisan key:generate
 ```
 
-4. Generate the storage link in public directory
+7. Generate the storage link in public directory
 
 ```shell
 php artisan storage:link
 ```
 
-5. Install node dependencies
+8. Install node dependencies
 
 ```shell
 yarn install
@@ -54,7 +54,7 @@ yarn install
 npm install
 ```
 
-6. Build vue resources
+9. Build vue resources
 
 ```shell
 yarn build
