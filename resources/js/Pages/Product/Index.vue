@@ -41,7 +41,7 @@ const queryParams = reactive({
     name: "",
     category: "",
     status: "",
-    order_by: "name",
+    order_by: "",
     direction: "",
     per_page: props.per_page,
 });

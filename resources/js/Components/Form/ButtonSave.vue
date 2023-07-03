@@ -1,8 +1,11 @@
 <template>
-	<LayoutButton submit>
-		<template #before><SaveIcon /></template>
-		Salvar
-	</LayoutButton>
+    <LayoutButton submit>
+        <template #before>
+            <SaveIcon />
+        </template>
+
+        Salvar
+    </LayoutButton>
 </template>
 
 <script setup>

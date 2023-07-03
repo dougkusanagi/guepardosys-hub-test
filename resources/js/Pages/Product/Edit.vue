@@ -2,6 +2,7 @@
 import FilepondInput from "@/Components/FilepondInput.vue";
 import ButtonSave from "@/Components/Form/ButtonSave.vue";
 import FormInputText from "@/Components/Form/FormInputText.vue";
+import BaseFormInputText from "@/Components/Form/BaseFormInputText.vue";
 import FormLabel from "@/Components/Form/FormLabel.vue";
 import FormSelect from "@/Components/Form/FormSelect.vue";
 import FormTextarea from "@/Components/Form/FormTextarea.vue";
@@ -11,9 +12,8 @@ import LayoutSection from "@/Components/LayoutSection.vue";
 import ProductEditImageThumb from "@/Components/ProductEditImageThumb.vue";
 import SidenavScrollto from "@/Components/SidenavScrollto.vue";
 import SidenavScrolltoLink from "@/Components/SidenavScrolltoLink.vue";
-import { slugfy } from "@/Helpers/string";
 import ScaleIcon from "@/Icons/Scale.vue";
-import CameraIcon from "@/Icons/Camera.vue";
+import Camera from "@/Icons/Camera.vue";
 import InfoCircle from "@/Icons/InfoCircle.vue";
 import ChevronLeft from "@/Icons/ChevronLeft.vue";
 import StackCircleIcon from "@/Icons/StackCircle.vue";
@@ -21,6 +21,7 @@ import InformationCircleIcon from "@/Icons/InformationCircle.vue";
 import DashboardLayout from "@/Layouts/DashboardLayout.vue";
 import { useForm } from "@inertiajs/vue3";
 import { computed, ref, watch } from "vue";
+import { slugfy } from "@/Helpers/string";
 
 const breadcrumbsLinks = [
     {
@@ -44,7 +45,7 @@ const sidenavScrolltoLinks = [
     {
         name: "Imagens",
         route: "#section-images",
-        icon: CameraIcon,
+        icon: Camera,
     },
     {
         name: "Informações",
@@ -197,6 +198,7 @@ function submit() {
                                     type="text"
                                     v-model="form.name"
                                 />
+
                                 <p class="text-rose-700">{{ errors.name }}</p>
                             </div>
 
@@ -209,6 +211,7 @@ function submit() {
                                     type="text"
                                     v-model="form.slug"
                                 />
+
                                 <p class="text-rose-700">{{ errors.slug }}</p>
                             </div>
                         </div>

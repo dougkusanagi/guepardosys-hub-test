@@ -15,12 +15,6 @@
         @input="(e) => $emit('update:modelValue', e.target.value)"
         @change="(e) => $emit('change:modelValue', e.target.value)"
         :value="modelValue"
-        :id="id"
-        :name="name"
-        :placeholder="placeholder"
-        :disabled="disabled"
-        :readonly="readonly"
-        :required="required"
     >
         <slot />
     </select>
@@ -28,17 +22,7 @@
 
 <script setup>
 const props = defineProps({
-    autofocus: Boolean,
-    classes: { type: String, default: "" },
-    disabled: Boolean,
-    id: { type: String, default: null },
-    label: { type: String, default: "" },
     modelValue: [String, Number],
-    name: { type: String, default: "" },
-    placeholder: { type: String, default: "" },
-    readonly: Boolean,
-    required: Boolean,
-    type: String,
     variant: {
         type: String,
         default: "",
