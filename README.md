@@ -18,13 +18,13 @@ git clone https://github.com/dougkusanagi/guepardosys-hub
 composer install
 ```
 
-3. Make a copy of .env.example and rename to .env
+3. Create a database and adjust the env variables according
+
+4. Make a copy of .env.example and rename to .env
 
 ```shell
 cp .env.example .env
 ```
-
-4. Create a database and adjust the env variables according
 
 5. Run migrations
 
