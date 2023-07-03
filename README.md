@@ -1,6 +1,6 @@
-# GuepardoSys - Gerenciador de Produtos e Pedidos
+# GuepardoSys - Multi Tenant Hub
 
-(WIP) App para gerenciamento de produtos, categorias e pedidos de marketplaces e afins.
+With Guepardosys Hub you will be able to import, export and manage your products and categories in many marketplaces like Bling,Mercado Livre, NuvemShop, Shopify, etc.
 
 ![alt text](https://github.com/dougkusanagi/guepardosys-hub-test/blob/main/docs/screenshot-themes.png?raw=true)
 
@@ -30,27 +30,39 @@ cp .env.example .env
 
 ```shell
 php artisan migrate:fresh --seed
-```
-
-or use this for create many product examples
-
-```shell
+# or use this for create many product examples
 php artisan migrate:fresh --seed --seeder=CompleteSeeder
 ```
 
-3. Install node dependencies
+3. Generate key
+
+```shell
+php artisan key:generate
+```
+
+4. Generate the storage link in public directory
+
+```shell
+php artisan storage:link
+```
+
+5. Install node dependencies
 
 ```shell
 yarn install
+# or with the good and old npm
+npm install
 ```
 
-4. Build vue resources
+6. Build vue resources
 
 ```shell
 yarn build
+# or with the good and old npm
+npm run build
 ```
 
-## Example credencials are:
+## The admin credencials that can manage all tenants are:
 
 ```
 login: example@email.com
@@ -59,6 +71,13 @@ password: password
 
 ## Todo
 
--   [x] Gerenciar produtos
--   [x] Gerenciar categorias
--   [ ] Gerenciar pedidos
+-   [x] Manage products
+-   [x] Manage categories
+-   [ ] Manage orders
+-   [ ] Automatic generate thumbnails
+-   [ ] Automatic apply mockups
+-   [ ] Import and export products/orders from Mercado Livre
+-   [ ] Import and export products/orders from Nuvem Shop
+-   [ ] Import and export products/orders from Shopify
+-   [ ] Import and export products/orders from Bling
+-   [ ] Import and export products/orders from other marketplaces...
